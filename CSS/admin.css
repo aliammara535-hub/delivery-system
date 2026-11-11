@@ -1,0 +1,319 @@
+/* ==========================================================================
+   تنسيقات لوحة تحكم المسؤول (Administrator Dashboard Styles)
+   ========================================================================== */
+
+/* بطاقة تسوية مالية معلقة */
+.settlement-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    transition: all var(--transition-base);
+    border-right: 4px solid var(--color-gold);
+}
+
+.settlement-card:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.settlement-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.settlement-id {
+    font-weight: 800;
+    color: var(--color-primary);
+    font-size: 1.05rem;
+}
+
+.settlement-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.settlement-party {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settlement-amount {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.settlement-amount span {
+    font-size: 0.85rem;
+    color: var(--color-gold-dark);
+}
+
+/* شاشة إنشاء رحلة توصيل للمندوب (Trip Builder) */
+.trip-builder-container {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.trip-selection-list {
+    max-height: 340px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--border-radius-md);
+    margin: 16px 0;
+    background: var(--bg-surface-alt);
+}
+
+.trip-selection-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color var(--transition-fast);
+    cursor: pointer;
+}
+
+.trip-selection-item:last-child {
+    border-bottom: none;
+}
+
+.trip-selection-item:hover {
+    background-color: var(--color-primary-subtle);
+}
+
+.trip-selection-item.selected {
+    background-color: var(--color-gold-lighter);
+}
+
+.trip-item-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trip-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.trip-summary-box {
+    background: #FAF7F2;
+    border: 1px solid var(--color-gold-light);
+    border-radius: var(--border-radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+/* بطاقات المدن والأسعار */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.city-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.city-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-gold);
+}
+
+.city-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.city-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.city-name i {
+    color: var(--color-gold);
+}
+
+.city-price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 14px 0;
+}
+
+.city-price-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.city-price-curr {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-gold-dark);
+}
+
+/* بطاقات رحلات المسؤول */
+.admin-trips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.admin-trip-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    transition: all var(--transition-base);
+}
+
+.admin-trip-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.admin-trip-header {
+    padding: 16px 20px;
+    background: var(--color-primary-dark);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-trip-header .trip-title {
+    font-weight: 800;
+    color: var(--color-gold-light);
+    font-size: 1.05rem;
+}
+
+.admin-trip-body {
+    padding: 18px 20px;
+}
+
+.admin-trip-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color-light);
+    font-size: 0.9rem;
+}
+
+.admin-trip-meta-row:last-child {
+    border-bottom: none;
+}
+
+/* جدول طلبات السحب */
+.withdrawal-badge {
+    padding: 4px 10px;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.withdrawal-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.withdrawal-approved {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.withdrawal-rejected {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+/* شريط سجل التغييرات للشحنة (Timeline) */
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 20px;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-item {
+    position: relative;
+    padding-right: 50px;
+    margin-bottom: 24px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-point {
+    position: absolute;
+    right: 11px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--color-gold);
+    border: 3px solid #FFF;
+    box-shadow: 0 0 0 2px var(--color-gold);
+}
+
+.timeline-content {
+    background: var(--bg-surface-alt);
+    border: 1px solid var(--border-color-light);
+    padding: 14px 18px;
+    border-radius: var(--border-radius-md);
+}
+
+.timeline-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}

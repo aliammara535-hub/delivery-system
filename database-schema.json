@@ -1,0 +1,78 @@
+{
+  "MiniDeliverySystem": {
+    "cities": {
+      "benghazi": {
+        "key": "benghazi",
+        "nameAr": "بنغازي",
+        "nameEn": "Benghazi",
+        "price": 30,
+        "active": true
+      },
+      "misrata": {
+        "key": "misrata",
+        "nameAr": "مصراتة",
+        "nameEn": "Misrata",
+        "price": 20,
+        "active": true
+      },
+      "tarhuna": {
+        "key": "tarhuna",
+        "nameAr": "ترهونة",
+        "nameEn": "Tarhuna",
+        "price": 25,
+        "active": true
+      },
+      "albayda": {
+        "key": "albayda",
+        "nameAr": "البيضاء",
+        "nameEn": "Al Bayda",
+        "price": 35,
+        "active": true
+      }
+    },
+    "users": {
+      "admins": {
+        "admin-01": {
+          "uid": "admin-01",
+          "name": "المدير العام للنظام",
+          "email": "admin@delivery.ly",
+          "phone": "0912345678",
+          "role": "admin",
+          "active": true,
+          "createdAt": "2026-11-10T12:00:00.000Z"
+        }
+      },
+      "customers": {
+        "cust-01": {
+          "uid": "cust-01",
+          "name": "متجر النور للإلكترونيات",
+          "storeName": "متجر النور",
+          "email": "store@delivery.ly",
+          "phone": "0923456789",
+          "role": "customer",
+          "balance": 0,
+          "active": true,
+          "createdAt": "2026-11-10T12:00:00.000Z"
+        }
+      },
+      "drivers": {
+        "driver-01": {
+          "uid": "driver-01",
+          "name": "أحمد بن علي",
+          "email": "driver@delivery.ly",
+          "phone": "0945678901",
+          "vehicleType": "سيارة نقل خفيف",
+          "licensePlate": "12-34567",
+          "role": "driver",
+          "active": true,
+          "createdAt": "2026-11-10T12:00:00.000Z"
+        }
+      }
+    },
+    "shipments": {},
+    "trips": {},
+    "financialTransactions": {},
+    "withdrawalRequests": {},
+    "shipmentHistory": {}
+  }
+}

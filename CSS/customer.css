@@ -1,0 +1,224 @@
+/* ==========================================================================
+   تنسيقات لوحة تحكم الزبون / المتجر (Customer / Store Dashboard Styles)
+   ========================================================================== */
+
+/* نموذج إنشاء الشحنة وصندوق معاينة السعر */
+.shipment-create-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 30px;
+}
+
+.price-preview-box {
+    background: linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 100%);
+    border: 2px dashed var(--color-gold);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.price-preview-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.price-preview-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.price-preview-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.price-preview-amount {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.price-preview-amount span {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-gold-dark);
+}
+
+/* شبكة بطاقات الشحنات للزبون (Shipment Cards Grid) */
+.customer-shipments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.customer-shipment-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-xs);
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.customer-shipment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-gold);
+}
+
+.shipment-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.shipment-code {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shipment-code i {
+    color: var(--color-gold);
+}
+
+.shipment-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.shipment-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92rem;
+}
+
+.shipment-detail-row i {
+    width: 20px;
+    color: var(--color-gold-dark);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.shipment-detail-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.shipment-desc-box {
+    background: var(--bg-surface-alt);
+    padding: 10px 14px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color-light);
+    line-height: 1.4;
+}
+
+.shipment-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color-light);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.shipment-price-tag {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.shipment-price-tag span {
+    font-size: 0.8rem;
+    color: var(--color-gold-dark);
+}
+
+/* بطاقة الرصيد المالي للزبون */
+.customer-wallet-hero {
+    background: radial-gradient(circle at 10% 20%, #4A2E1B 0%, #27140B 90%);
+    border-radius: var(--border-radius-xl);
+    padding: 32px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-md), 0 0 0 1px rgba(197, 160, 89, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.customer-wallet-hero::after {
+    content: '';
+    position: absolute;
+    left: -60px;
+    bottom: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.wallet-balance-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wallet-label {
+    font-size: 0.95rem;
+    color: var(--color-gold-light);
+    font-weight: 600;
+}
+
+.wallet-amount {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.1;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.wallet-currency {
+    font-size: 1.3rem;
+    color: var(--color-gold);
+    font-weight: 700;
+}
+
+.wallet-note {
+    font-size: 0.82rem;
+    color: #E2D9CF;
+    opacity: 0.8;
+}

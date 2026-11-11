@@ -1,0 +1,69 @@
+{
+  "rules": {
+    "MiniDeliverySystem": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()",
+
+      "cities": {
+        ".read": true,
+        ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()"
+      },
+
+      "users": {
+        "admins": {
+          ".read": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()",
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid",
+            ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()"
+          }
+        },
+        "customers": {
+          ".read": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()",
+          "$uid": {
+            ".read": "auth != null && (auth.uid === $uid || root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists())",
+            ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists() || (auth != null && auth.uid === $uid)"
+          }
+        },
+        "drivers": {
+          ".read": "auth != null",
+          "$uid": {
+            ".read": "auth != null && (auth.uid === $uid || root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists())",
+            ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()"
+          }
+        }
+      },
+
+      "shipments": {
+        ".read": "auth != null",
+        "$shipmentId": {
+          // يمكن للمتجر إنشاء شحنة جديدة ببياناته أو حذف شحنته إذا كانت بانتظار الموافقة، وللمندوب تأكيد التسليم، وللمدير الصلاحية الكاملة
+          ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists() || (!data.exists() && newData.child('customerId').val() === auth.uid && newData.child('status').val() === 'بانتظار الموافقة') || (data.exists() && !newData.exists() && data.child('customerId').val() === auth.uid && data.child('status').val() === 'بانتظار الموافقة') || (data.exists() && data.child('driverId').val() === auth.uid && data.child('status').val() === 'قيد التوصيل' && newData.child('status').val() === 'تم التسليم')"
+        }
+      },
+
+      "trips": {
+        ".read": "auth != null",
+        "$tripId": {
+          ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()"
+        }
+      },
+
+      "withdrawalRequests": {
+        ".read": "auth != null",
+        "$reqId": {
+          ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists() || (!data.exists() && newData.child('customerId').val() === auth.uid && newData.child('status').val() === 'pending')"
+        }
+      },
+
+      "financialTransactions": {
+        ".read": "auth != null",
+        ".write": "root.child('MiniDeliverySystem/users/admins/' + auth.uid).exists()"
+      },
+
+      "shipmentHistory": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }
+  }
+}

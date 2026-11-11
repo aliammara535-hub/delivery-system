@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة التوصيل المصغر | Mini Delivery Management System</title>
+
+    <!-- خط كايرو العربي من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- أيقونات FontAwesome الإصدار 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- ملفات التنسيق CSS -->
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
+    <link rel="stylesheet" href="CSS/admin.css">
+    <link rel="stylesheet" href="CSS/customer.css">
+    <link rel="stylesheet" href="CSS/driver.css">
+</head>
+<body>
+
+    <!-- ======================================================================
+         1. واجهة تسجيل الدخول الموحدة (Unified Login Interface)
+         ====================================================================== -->
+    <section id="auth-section" class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                </div>
+                <h2 class="auth-title">نظام إدارة التوصيل المصغر</h2>
+                <p class="auth-subtitle">بوابة الدخول الموحدة: الإدارة • المتاجر • المناديب</p>
+            </div>
+
+            <!-- شريط الحسابات التجريبية السريعة لتسهيل الفحص المباشر -->
+            <div class="auth-demo-bar">
+                <div class="auth-demo-bar-title">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> حسابات تجريبية سريعة (نقرة واحدة للتعبئة):
+                </div>
+                <div class="demo-buttons-group">
+                    <button type="button" class="btn-demo-quick" id="demo-admin-btn">
+                        <i class="fa-solid fa-user-shield"></i> المدير (Admin)
+                    </button>
+                    <button type="button" class="btn-demo-quick" id="demo-customer-btn">
+                        <i class="fa-solid fa-store"></i> متجر (Store)
+                    </button>
+                    <button type="button" class="btn-demo-quick" id="demo-driver-btn">
+                        <i class="fa-solid fa-motorcycle"></i> مندوب (Driver)
+                    </button>
+                </div>
+            </div>
+
+            <!-- نموذج تسجيل الدخول الموحد -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">البريد الإلكتروني:</label>
+                    <div style="position:relative;">
+                        <input type="email" id="login-email" class="form-control" placeholder="name@example.ly" required style="padding-left:40px;">
+                        <i class="fa-regular fa-envelope" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">كلمة المرور:</label>
+                    <div style="position:relative;">
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required style="padding-left:40px;">
+                        <i class="fa-solid fa-lock" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-submit-btn" class="btn btn-primary w-100 btn-lg mt-3" style="width:100%;">
+                    تسجيل الدخول <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </form>
+
+            <div class="mt-4 pt-3 border-top text-center" style="font-size:0.85rem; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
+                <span id="login-firebase-status">
+                    <i class="fa-solid fa-server text-gold"></i> جاهز للاتصال بـ Firebase
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-gold" onclick="window.MDS_APP.openFirebaseConfigModal()" title="إعدادات Firebase">
+                    <i class="fa-solid fa-gear"></i> إعدادات الربط
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         2. هيكل لوحة التحكم المتكاملة (Main Dashboard Shell)
+         ====================================================================== -->
+    <div id="dashboard-section" class="dashboard-layout d-none">
+        <!-- طبقة التعتيم للشاشات الصغيرة عند فتح القائمة -->
+        <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+        <!-- الشريط الجانبي (Sidebar) -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <div class="sidebar-title-wrap">
+                    <div class="sidebar-title">نظام التوصيل</div>
+                    <div class="sidebar-subtitle">MINI DELIVERY SYSTEM</div>
+                </div>
+            </div>
+
+            <!-- روابط المسؤول (Admin Navigation) -->
+            <nav id="admin-nav-group" class="sidebar-nav role-nav-group d-none">
+                <div class="sidebar-nav-heading">لوحة إدارة النظام</div>
+                <a href="#" class="nav-link active" data-view="admin-overview">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>نظرة عامة وإحصائيات</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-shipments">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>إدارة كافة الشحنات</span>
+                    <span id="admin-nav-pending-badge" class="badge-count" style="display:none;">0</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-trips">
+                    <i class="fa-solid fa-route"></i>
+                    <span>رحلات التوصيل</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-settlements">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>التسويات المالية</span>
+                    <span id="admin-nav-settle-badge" class="badge-count" style="display:none;">0</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-customers">
+                    <i class="fa-solid fa-store"></i>
+                    <span>الزبائن والمتاجر</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-drivers">
+                    <i class="fa-solid fa-motorcycle"></i>
+                    <span>مناديب التوصيل</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-cities">
+                    <i class="fa-solid fa-city"></i>
+                    <span>المدن وأسعار التوصيل</span>
+                </a>
+                <a href="#" class="nav-link" data-view="admin-withdrawals">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>طلبات سحب الأرصدة</span>
+                </a>
+            </nav>
+
+            <!-- روابط الزبون / المتجر (Customer Navigation) -->
+            <nav id="customer-nav-group" class="sidebar-nav role-nav-group d-none">
+                <div class="sidebar-nav-heading">بوابة المتجر والزبون</div>
+                <a href="#" class="nav-link active" data-view="customer-shipments">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <span>شحناتي ومتابعتها</span>
+                </a>
+                <a href="#" class="nav-link" data-view="customer-new-shipment">
+                    <i class="fa-solid fa-square-plus"></i>
+                    <span>إنشاء شحنة جديدة</span>
+                </a>
+                <a href="#" class="nav-link" data-view="customer-finances">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>المحفظة المالية والرصيد</span>
+                </a>
+            </nav>
+
+            <!-- روابط مندوب التوصيل (Driver Navigation) -->
+            <nav id="driver-nav-group" class="sidebar-nav role-nav-group d-none">
+                <div class="sidebar-nav-heading">بوابة المندوب السائق</div>
+                <a href="#" class="nav-link active" data-view="driver-trips">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span>رحلاتي والشحنات المكلف بها</span>
+                </a>
+            </nav>
+
+            <!-- بطاقة المستخدم الحالية وزر تسجيل الخروج أسفل الشريط الجانبي -->
+            <div class="sidebar-footer">
+                <div class="user-profile-badge">
+                    <div id="sidebar-user-avatar" class="user-avatar">م</div>
+                    <div class="user-info">
+                        <div id="sidebar-user-name" class="user-name">اسم المستخدم</div>
+                        <div id="sidebar-user-role" class="user-role-text">صلاحية المستخدم</div>
+                    </div>
+                    <button class="btn-sidebar-logout action-logout" title="تسجيل الخروج">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- المحتوى والترويسة (Main Wrapper) -->
+        <div class="dashboard-wrapper">
+            <!-- ترويسة اللوحة العلوية -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" title="تبديل القائمة">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-title-wrap">
+                        <h1 id="header-page-title">لوحة التحكم</h1>
+                        <div id="header-page-crumb" class="header-breadcrumb">الرئيسية</div>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- مؤشر حالة اتصال Firebase Realtime Database -->
+                    <div class="db-status-pill" onclick="window.MDS_APP.openFirebaseConfigModal()" style="cursor:pointer;" title="انقر لتعديل إعدادات Firebase">
+                        <span id="db-status-dot" class="db-status-dot"></span>
+                        <span id="db-status-label">Firebase</span>
+                        <i class="fa-solid fa-sliders" style="font-size:0.75rem; color:var(--color-gold);"></i>
+                    </div>
+
+                    <button class="btn btn-sm btn-outline action-logout" title="تسجيل الخروج من النظام">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+                    </button>
+                </div>
+            </header>
+
+            <!-- منطقة العرض الرئيسية (Main Views Container) -->
+            <main class="dashboard-content">
+
+                <!-- ==========================================================
+                     أ. شاشات المسؤول (Admin Views)
+                     ========================================================== -->
+
+                <!-- 1. نظرة عامة وإحصائيات المسؤول -->
+                <section id="view-admin-overview" class="view-section">
+                    <div class="stats-grid">
+                        <div class="stat-card stat-gold">
+                            <div class="stat-info">
+                                <div class="stat-label">إجمالي الشحنات بالنظام</div>
+                                <div id="admin-stat-total-shipments" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-warning">
+                            <div class="stat-info">
+                                <div class="stat-label">بانتظار الموافقة / الإسناد</div>
+                                <div id="admin-stat-pending" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-hourglass-start"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-info">
+                            <div class="stat-info">
+                                <div class="stat-label">شحنات قيد التوصيل</div>
+                                <div id="admin-stat-delivering" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-truck-moving"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-success">
+                            <div class="stat-info">
+                                <div class="stat-label">تم تسليمها للزبائن</div>
+                                <div id="admin-stat-delivered" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-primary">
+                            <div class="stat-info">
+                                <div class="stat-label">تسوية مالية جاهزة</div>
+                                <div id="admin-stat-settled" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-gold">
+                            <div class="stat-info">
+                                <div class="stat-label">إجمالي المبالغ المسواة للمتاجر</div>
+                                <div class="stat-value"><span id="admin-stat-total-amount">0</span> <span class="stat-currency">د.ل</span></div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- روابط سريعة للعمليات الحيوية -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fa-solid fa-bolt"></i> إجراءات سريعة للمدير</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex gap-3 flex-wrap">
+                                <button class="btn btn-primary" onclick="window.adminCtrl.openCreateTripModal()">
+                                    <i class="fa-solid fa-route"></i> تنظيم رحلة توصيل جديدة
+                                </button>
+                                <button class="btn btn-gold" onclick="window.MDS_APP.switchView('admin-settlements')">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i> استلام التوريدات المالية المعلقة
+                                </button>
+                                <button class="btn btn-secondary" onclick="window.adminCtrl.openAddCustomerModal()">
+                                    <i class="fa-solid fa-user-plus"></i> إضافة متجر / زبون جديد
+                                </button>
+                                <button class="btn btn-secondary" onclick="window.adminCtrl.openAddDriverModal()">
+                                    <i class="fa-solid fa-motorcycle"></i> إضافة مندوب جديد
+                                </button>
+                                <button class="btn btn-outline" onclick="window.adminCtrl.openAddCityModal()">
+                                    <i class="fa-solid fa-city"></i> إضافة مدينة جديدة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. جدول كافة الشحنات مع الفلاتر -->
+                <section id="view-admin-shipments" class="view-section">
+                    <div class="toolbar-card">
+                        <div class="toolbar-filters">
+                            <div class="search-box">
+                                <input type="text" id="admin-shipment-search" class="form-control" placeholder="ابحث برقم الشحنة، المستلم، الهاتف، المتجر...">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+
+                            <select id="admin-filter-status" class="form-control" style="width:auto; min-width:160px;">
+                                <option value="all">كل الحالات</option>
+                                <option value="بانتظار الموافقة">بانتظار الموافقة</option>
+                                <option value="قيد التوصيل">قيد التوصيل</option>
+                                <option value="تم التسليم">تم التسليم</option>
+                                <option value="تسوية مالية جاهزة">تسوية مالية جاهزة</option>
+                            </select>
+
+                            <select id="admin-filter-city" class="form-control" style="width:auto; min-width:140px;">
+                                <option value="all">كل المدن</option>
+                            </select>
+
+                            <select id="admin-filter-customer" class="form-control" style="width:auto; min-width:160px;">
+                                <option value="all">كل الزبائن / المتاجر</option>
+                            </select>
+
+                            <select id="admin-filter-driver" class="form-control" style="width:auto; min-width:140px;">
+                                <option value="all">كل المندوبين</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الشحنة</th>
+                                        <th>بيانات المستلم</th>
+                                        <th>المتجر المصدر</th>
+                                        <th>مدينة الوجهة</th>
+                                        <th>الأسعار والرسوم</th>
+                                        <th>الحالة الحالية</th>
+                                        <th>المندوب المعين</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-shipments-table-body">
+                                    <!-- يتم التوليد عبر JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. إدارة الرحلات -->
+                <section id="view-admin-trips" class="view-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <div>
+                            <h3 class="fw-bold" style="color:var(--color-primary);">رحلات التوصيل المجمعة</h3>
+                            <p class="text-secondary" style="font-size:0.9rem;">تنظيم وتوزيع الشحنات على المناديب في رحلات عمل منظمة.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.adminCtrl.openCreateTripModal()">
+                            <i class="fa-solid fa-plus"></i> تنظيم وإنشاء رحلة جديدة
+                        </button>
+                    </div>
+
+                    <div id="admin-trips-container" class="admin-trips-grid">
+                        <!-- بطاقات الرحلات -->
+                    </div>
+                </section>
+
+                <!-- 4. التسويات المالية -->
+                <section id="view-admin-settlements" class="view-section">
+                    <div class="card mb-4" style="background:#FCF9EE; border-color:#E8D196;">
+                        <div class="card-body">
+                            <h4 class="text-gold mb-2"><i class="fa-solid fa-shield-halved"></i> آلية إدارة التسويات المالية المعتمدة</h4>
+                            <p style="font-size:0.92rem; color:var(--text-primary); line-height:1.5;">
+                                عندما يقوم المندوب بتسليم الشحنة للزبون وتحصيل قيمتها، تصبح حالتها <strong>"تم التسليم"</strong>.
+                                عند عودة المندوب وتوريد المبالغ النقدية لخزينة الشركة، يقوم المدير بالضغط على <strong>"تأكيد استلام المبلغ والتسوية"</strong>، فتتحول فوراً إلى <strong>"تسوية مالية جاهزة"</strong>، ويصبح بإمكان المتجر سحب رصيده المالي.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="admin-settlements-list">
+                        <!-- قائمة الشحنات المسلمة التي تنتظر التوريد -->
+                    </div>
+                </section>
+
+                <!-- 5. إدارة الزبائن والمتاجر -->
+                <section id="view-admin-customers" class="view-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <div>
+                            <h3 class="fw-bold" style="color:var(--color-primary);">قائمة المتاجر والزبائن</h3>
+                            <p class="text-secondary" style="font-size:0.9rem;">إدارة حسابات أصحاب المتاجر وتفعيل أو تعطيل صلاحياتهم.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.adminCtrl.openAddCustomerModal()">
+                            <i class="fa-solid fa-plus"></i> إضافة متجر جديد
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المتجر / المسؤول</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th>رقم الهاتف</th>
+                                        <th>إحصائيات الشحنات</th>
+                                        <th>حالة الحساب</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-customers-table-body">
+                                    <!-- يتم التوليد عبر JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. إدارة المناديب والسائقين -->
+                <section id="view-admin-drivers" class="view-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <div>
+                            <h3 class="fw-bold" style="color:var(--color-primary);">قائمة مناديب التوصيل</h3>
+                            <p class="text-secondary" style="font-size:0.9rem;">إدارة بيانات السائقين ومركباتهم وتتبع أدائهم الميداني.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.adminCtrl.openAddDriverModal()">
+                            <i class="fa-solid fa-plus"></i> إضافة مندوب جديد
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المندوب</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th>رقم الهاتف</th>
+                                        <th>مركبة التوصيل</th>
+                                        <th>الشحنات المسندة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-drivers-table-body">
+                                    <!-- يتم التوليد عبر JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. إدارة المدن والأسعار -->
+                <section id="view-admin-cities" class="view-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <div>
+                            <h3 class="fw-bold" style="color:var(--color-primary);">المدن وأسعار التوصيل المعتمدة</h3>
+                            <p class="text-secondary" style="font-size:0.9rem;">
+                                تُخزن الأسعار ديناميكياً في <strong>Firebase Realtime Database</strong> ويتم احتسابها تلقائياً عند إنشاء أي شحنة.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.adminCtrl.openAddCityModal()">
+                            <i class="fa-solid fa-plus"></i> إضافة مدينة جديدة
+                        </button>
+                    </div>
+
+                    <div id="admin-cities-grid" class="cities-grid">
+                        <!-- بطاقات المدن والأسعار -->
+                    </div>
+                </section>
+
+                <!-- 8. طلبات سحب الأرصدة -->
+                <section id="view-admin-withdrawals" class="view-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fa-solid fa-money-bill-transfer"></i> طلبات السحب المالية المقدمة من المتاجر</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>اسم المتجر</th>
+                                        <th>المبلغ المطلوب</th>
+                                        <th>تاريخ التقديم</th>
+                                        <th>حالة الطلب</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-withdrawals-table-body">
+                                    <!-- يتم التوليد عبر JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ==========================================================
+                     ب. شاشات الزبون / المتجر (Customer / Store Views)
+                     ========================================================== -->
+
+                <!-- 1. شحنات المتجر ومتابعة الحالات -->
+                <section id="view-customer-shipments" class="view-section">
+                    <div class="toolbar-card">
+                        <div class="toolbar-filters">
+                            <div class="search-box">
+                                <input type="text" id="cust-shipment-search" class="form-control" placeholder="ابحث برقم الشحنة، المستلم أو الهاتف...">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.MDS_APP.switchView('customer-new-shipment')">
+                            <i class="fa-solid fa-plus"></i> إضافة شحنة جديدة
+                        </button>
+                    </div>
+
+                    <!-- شريط تبويبات الحالات الأربعة الرسمية -->
+                    <div class="status-tabs">
+                        <button class="status-tab-btn cust-status-tab active" data-status="all">
+                            الكل <span id="cust-tab-count-all" class="tab-badge">0</span>
+                        </button>
+                        <button class="status-tab-btn cust-status-tab" data-status="بانتظار الموافقة">
+                            بانتظار الموافقة <span id="cust-tab-count-pending" class="tab-badge">0</span>
+                        </button>
+                        <button class="status-tab-btn cust-status-tab" data-status="قيد التوصيل">
+                            قيد التوصيل <span id="cust-tab-count-delivering" class="tab-badge">0</span>
+                        </button>
+                        <button class="status-tab-btn cust-status-tab" data-status="تم التسليم">
+                            تم التسليم <span id="cust-tab-count-delivered" class="tab-badge">0</span>
+                        </button>
+                        <button class="status-tab-btn cust-status-tab" data-status="تسوية مالية جاهزة">
+                            تسوية مالية جاهزة <span id="cust-tab-count-settled" class="tab-badge">0</span>
+                        </button>
+                    </div>
+
+                    <div id="cust-shipments-grid" class="customer-shipments-grid">
+                        <!-- بطاقات شحنات الزبون -->
+                    </div>
+                </section>
+
+                <!-- 2. إنشاء شحنة جديدة -->
+                <section id="view-customer-new-shipment" class="view-section">
+                    <div class="shipment-create-card">
+                        <div class="mb-4 pb-3 border-bottom">
+                            <h3 class="fw-bold" style="color:var(--color-primary);"><i class="fa-solid fa-box-open text-gold"></i> إنشاء شحنة توصيل جديدة</h3>
+                            <p class="text-secondary" style="font-size:0.92rem;">
+                                أدخل تفاصيل المستلم وحدد مدينة الوجهة. يتم احتساب سعر التوصيل تلقائياً من خوادم النظام.
+                            </p>
+                        </div>
+
+                        <form id="create-shipment-form">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label class="form-label" for="cust-recipient-name">
+                                        <span class="required">*</span> اسم المستلم ثلاثي:
+                                    </label>
+                                    <input type="text" id="cust-recipient-name" class="form-control" placeholder="مثال: عمر فتحي المبروك" required>
+                                </div>
+
+                                <div class="form-col">
+                                    <label class="form-label" for="cust-recipient-phone">
+                                        <span class="required">*</span> رقم هاتف المستلم:
+                                    </label>
+                                    <input type="tel" id="cust-recipient-phone" class="form-control" placeholder="091XXXXXXX" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row mt-2">
+                                <div class="form-col">
+                                    <label class="form-label" for="cust-shipment-city">
+                                        <span class="required">*</span> مدينة الوجهة والتوصيل:
+                                    </label>
+                                    <select id="cust-shipment-city" class="form-control" required>
+                                        <option value="">جاري تحميل المدن من Firebase...</option>
+                                    </select>
+                                    <small class="form-hint">يتم جلب سعر التوصيل لكل مدينة ديناميكياً من قاعدة البيانات.</small>
+                                </div>
+
+                                <div class="form-col">
+                                    <label class="form-label" for="cust-item-value">
+                                        قيمة البضاعة المطلوب تحصيلها من الزبون (دينار ليبي):
+                                    </label>
+                                    <input type="number" id="cust-item-value" class="form-control" placeholder="0" min="0" step="1">
+                                    <small class="form-hint">المبلغ الذي سيسلمه الزبون للمندوب ويُضاف لرصيدك بعد التسوية.</small>
+                                </div>
+                            </div>
+
+                            <!-- صندوق المعاينة الحية لسعر التوصيل المسترجع من Firebase -->
+                            <div class="price-preview-box">
+                                <div class="price-preview-label">
+                                    <div class="price-preview-title">
+                                        <i class="fa-solid fa-calculator text-gold"></i> سعر التوصيل المحدد تلقائياً
+                                    </div>
+                                    <div class="price-preview-subtitle">مسترجع ومحسوب ديناميكياً من Firebase Realtime Database</div>
+                                </div>
+                                <div class="price-preview-amount">
+                                    <span id="cust-price-preview-val">0</span> <span>د.ل</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="cust-shipment-details">
+                                    <span class="required">*</span> تفاصيل ووصف محتويات الشحنة:
+                                </label>
+                                <textarea id="cust-shipment-details" class="form-control" rows="3" placeholder="مثال: علبة أحذية مقاس 42 + قميص أبيض، تسليم سريع" required></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-3 mt-4">
+                                <button type="button" class="btn btn-secondary" onclick="window.MDS_APP.switchView('customer-shipments')">
+                                    إلغاء والعودة
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fa-solid fa-check"></i> تأكيد وحفظ الشحنة
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 3. المحفظة المالية للزبون -->
+                <section id="view-customer-finances" class="view-section">
+                    <!-- بطاقة رصيد المحفظة -->
+                    <div class="customer-wallet-hero">
+                        <div class="wallet-balance-wrap">
+                            <div class="wallet-label"><i class="fa-solid fa-coins"></i> الرصيد المتاح للسحب حالياً</div>
+                            <div class="wallet-amount">
+                                <span id="cust-wallet-balance">0</span>
+                                <span class="wallet-currency">دينار ليبي</span>
+                            </div>
+                            <div class="wallet-note">
+                                * يتشكل الرصيد تلقائياً من المبالغ المسواة من الشحنات بحالة "تسوية مالية جاهزة".
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-gold btn-lg" onclick="window.custCtrl.openWithdrawalModal()">
+                                <i class="fa-solid fa-money-bill-wave"></i> طلب سحب رصيد
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- إحصائيات مالية سريعة -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-gold">
+                            <div class="stat-info">
+                                <div class="stat-label">إجمالي شحنات المتجر</div>
+                                <div id="cust-stat-total" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-warning">
+                            <div class="stat-info">
+                                <div class="stat-label">بانتظار الموافقة</div>
+                                <div id="cust-stat-pending" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-info">
+                            <div class="stat-info">
+                                <div class="stat-label">قيد التوصيل</div>
+                                <div id="cust-stat-delivering" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-success">
+                            <div class="stat-info">
+                                <div class="stat-label">تم تسليمها للزبائن</div>
+                                <div id="cust-stat-delivered" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-primary">
+                            <div class="stat-info">
+                                <div class="stat-label">تسوية مالية جاهزة</div>
+                                <div id="cust-stat-settled" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- جدول سجل طلبات السحب -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> سجل طلبات السحب المالي السابقة</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>المبلغ المسحوب</th>
+                                        <th>تاريخ التقديم</th>
+                                        <th>حالة الطلب</th>
+                                        <th>ملاحظات الإدارة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cust-withdrawals-table-body">
+                                    <!-- يتم التوليد عبر JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ==========================================================
+                     ج. شاشات مندوب التوصيل (Driver Views)
+                     ========================================================== -->
+
+                <!-- 1. رحلات التوصيل والشحنات المكلف بها -->
+                <section id="view-driver-trips" class="view-section">
+                    <!-- بطاقات إحصائيات المندوب -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-primary">
+                            <div class="stat-info">
+                                <div class="stat-label">إجمالي الشحنات المسندة إليّ</div>
+                                <div id="driver-stat-total-assigned" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-info">
+                            <div class="stat-info">
+                                <div class="stat-label">شحنات قيد التوصيل حالياً</div>
+                                <div id="driver-stat-active-delivering" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-truck-moving"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-success">
+                            <div class="stat-info">
+                                <div class="stat-label">شحنات تم تسليمها بنجاح</div>
+                                <div id="driver-stat-delivered" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-gold">
+                            <div class="stat-info">
+                                <div class="stat-label">الرحلات النشطة</div>
+                                <div id="driver-stat-active-trips" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-route"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- تبويبات رحلات المندوب -->
+                    <div class="status-tabs mt-3">
+                        <button class="status-tab-btn driver-trips-tab active" data-tab="active-trips">
+                            <i class="fa-solid fa-clock"></i> رحلات التوصيل الجارية (النشطة)
+                        </button>
+                        <button class="status-tab-btn driver-trips-tab" data-tab="completed-trips">
+                            <i class="fa-solid fa-clipboard-check"></i> الأرشيف والرحلات السابقة
+                        </button>
+                    </div>
+
+                    <!-- حاوية رحلات المندوب الكبرى التي تحوي الشحنات الصغرى -->
+                    <div id="driver-trips-container">
+                        <!-- يتم التوليد عبر JavaScript -->
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         3. النافذة المنبثقة العامة (Reusable App Modal)
+         ====================================================================== -->
+    <div id="app-modal" class="modal-backdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-circle-notch text-gold"></i>
+                    <span id="modal-title-text">العنوان</span>
+                </div>
+                <button id="modal-close-btn" class="modal-close-btn" title="إغلاق">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-body-container" class="modal-body">
+                <!-- المحتوى الديناميكي -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         4. حاوية الإشعارات المنبثقة (Toast Container)
+         ====================================================================== -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- مؤشر التحميل العام (Loading Overlay) -->
+    <div id="app-loading-overlay" class="modal-backdrop d-none" style="z-index: 10000; background:rgba(39,20,11,0.4);">
+        <div class="text-center p-4 bg-white rounded shadow-lg" style="background:#FFFFFF; border-radius:16px; padding:30px;">
+            <div class="spinner spinner-lg mb-3"></div>
+            <div class="fw-bold text-primary">جاري معالجة البيانات والاتصال بالخادم...</div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         5. مكتبات Firebase SDK الرسمية (v10 Compat)
+         ====================================================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <!-- ======================================================================
+         6. ملفات جافاسكربت المعيارية للتطبيق
+         ====================================================================== -->
+    <script src="JS/firebase-config.js"></script>
+    <script src="JS/database.js"></script>
+    <script src="JS/auth.js"></script>
+    <script src="JS/shipments.js"></script>
+    <script src="JS/admin.js"></script>
+    <script src="JS/customer.js"></script>
+    <script src="JS/driver.js"></script>
+    <script src="JS/app.js"></script>
+    <script type="module" src="JS/firebase.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+/* ==========================================================================
+   تنسيقات لوحة تحكم مندوب التوصيل (Driver / Representative Dashboard)
+   ========================================================================== */
+
+/* بطاقة رحلة التوصيل الكبرى (Trip Container Card) */
+.driver-trip-container {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.driver-trip-container:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-gold);
+}
+
+.trip-banner-header {
+    background: linear-gradient(135deg, #3D2314 0%, #27140B 100%);
+    color: #FFFFFF;
+    padding: 20px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 2px solid var(--color-gold);
+}
+
+.trip-banner-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.trip-icon-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--color-gold-gradient);
+    color: var(--color-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: var(--shadow-gold);
+}
+
+.trip-title-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.trip-date-text {
+    font-size: 0.82rem;
+    color: var(--color-gold-light);
+}
+
+.trip-banner-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.trip-stat-pill {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trip-stat-pill i {
+    color: var(--color-gold);
+}
+
+/* شبكة الشحنات الفرعية داخل بطاقة الرحلة (Sub-shipment cards inside Trip) */
+.trip-shipments-wrapper {
+    padding: 24px;
+    background-color: var(--bg-surface-alt);
+}
+
+.trip-shipments-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trip-shipments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 18px;
+}
+
+/* بطاقة الشحنة الفردية للمندوب */
+.driver-shipment-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-xs);
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.driver-shipment-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+}
+
+.driver-shipment-card.delivered-card {
+    border-color: #A7F3D0;
+    background: #F8FCF9;
+}
+
+.driver-shipment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.driver-shipment-id {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--color-primary);
+}
+
+.driver-shipment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.driver-recipient-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.driver-recipient-name i {
+    color: var(--color-gold);
+}
+
+.driver-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+}
+
+.driver-info-row i {
+    width: 18px;
+    color: var(--color-gold-dark);
+    text-align: center;
+}
+
+.driver-phone-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.phone-quick-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all var(--transition-fast);
+}
+
+.phone-call-btn {
+    background-color: #EBF8FF;
+    color: #2B6CB0;
+    border: 1px solid #BEE3F8;
+}
+
+.phone-call-btn:hover {
+    background-color: #2B6CB0;
+    color: #FFF;
+}
+
+.phone-wa-btn {
+    background-color: #E6FFFA;
+    color: #234E52;
+    border: 1px solid #B2F5EA;
+}
+
+.phone-wa-btn:hover {
+    background-color: #25D366;
+    color: #FFF;
+}
+
+.driver-shipment-desc {
+    background: #F9F7F4;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    border: 1px solid #ECE6DE;
+    line-height: 1.4;
+}
+
+.driver-shipment-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color-light);
+    gap: 12px;
+}
+
+.driver-price-tag {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.driver-price-tag span {
+    font-size: 0.75rem;
+    color: var(--color-gold-dark);
+}
+
+.btn-confirm-delivery {
+    background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    box-shadow: 0 3px 8px rgba(46, 125, 50, 0.25);
+    padding: 8px 16px;
+    font-size: 0.88rem;
+}
+
+.btn-confirm-delivery:hover {
+    background: linear-gradient(135deg, #1B5E20 0%, #144918 100%);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+}
+
+.delivery-done-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #2E7D32;
+    padding: 6px 12px;
+    border-radius: var(--border-radius-pill);
+    background-color: #E8F5E9;
+    border: 1px solid #A5D6A7;
+}
